@@ -61,3 +61,14 @@ FROM users
 LEFT JOIN posts ON posts.user_id = users.id
 RIGHT JOIN comments ON comments.posts_id = posts.id
 WHERE (comments.body LIKE '%SSL%' OR comments.body LIKE '%firewall%') AND posts.content LIKE '%nemo%';
+
+--FINAL
+SELECT COUNT (comments.*) 
+FROM posts
+RIGHT JOIN comments ON comments.posts_id = posts.id
+WHERE posts.created_at > '2015-07-14';
+
+SELECT *
+FROM users
+RIGHT JOIN comments ON comments.posts_id = users.id
+WHERE comments.body LIKE '%programming%';
