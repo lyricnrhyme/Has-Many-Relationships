@@ -1,4 +1,8 @@
+DROP USER has_many_user;
+
 CREATE USER has_many_user;
+
+DROP DATABASE has_many_blogs;
 
 CREATE DATABASE has_many_blogs WITH OWNER = has_many_user;
 
@@ -17,12 +21,12 @@ DROP TABLE IF EXISTS posts;
 
 CREATE TABLE posts(
 	id SERIAL PRIMARY KEY NOT NULL,
-	body VARCHAR(510) DEFAULT NULL,
+	title VARCHAR(180) DEFAULT NULL,
+	url VARCHAR(510) DEFAULT NULL,
+	content TEXT DEFAULT NULL,
 	created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT now(),
 	updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT now()
 );
-
-DROP TABLE IF EXISTS comments;
 
 CREATE TABLE comments(
 	id SERIAL PRIMARY KEY NOT NULL,
@@ -32,10 +36,19 @@ CREATE TABLE comments(
 );
 
 ALTER TABLE posts
-ADD user_id INTEGER NOT NULL REFERENCES users(id);
+ADD COLUMN user_id SERIAL NOT NULL;
+
+ALTER TABLE posts
+ADD FOREIGN KEY (user_id) REFERENCES users(id);
 
 ALTER TABLE comments
-ADD user_id INTEGER NOT NULL REFERENCES users(id);
+ADD COLUMN user_id SERIAL NOT NULL;
 
 ALTER TABLE comments
-ADD posts_id INTEGER NOT NULL REFERENCES posts(id);
+ADD FOREIGN KEY (user_id) REFERENCES users(id);
+
+ALTER TABLE comments
+ADD COLUMN posts_id SERIAL NOT NULL;
+
+ALTER TABLE comments
+ADD FOREIGN KEY (posts_id) REFERENCES posts(id);
